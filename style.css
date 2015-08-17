@@ -49,6 +49,24 @@ neg {
 zero {
   color: black; }
 
-h1 {
-  
-}
+  input {
+    padding: 5px;
+    border-radius: 7px;
+    border: 0;
+    border: 1px solid darkgrey;
+   }
+
+    /* .fa-arrow-up , .fa-arrow-down {
+      float: right;
+    } */
+
+  .author {
+    float: right;
+    padding-bottom: 20px;
+  }
+
+  .pos {
+    color: green; }
+
+  .neg {
+    color: red; }
