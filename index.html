@@ -17,7 +17,7 @@
     }
   </style>
   <body ng-controller='redditController'>
-    <nav>Reddit Clone
+    <nav>Add your Favorite Marathon!
       <span ng-click="show()"><i class="fa fa-plus"></i> Submit Post</span>
       <input type="text" class="search" placeholder="Search" ng-model="search" ng-init="selected= '-votes'"/>
       Sort by <select name="articles" id="articles" ng-model="selected">
@@ -38,21 +38,35 @@
     </div>
 
     <main>
-      <section ng-repeat="post in posts">
+      <section ng-repeat="post in posts | filter: search | orderBy: selected">
         <img ng-src="{{post.image}}" alt="image">
-        <i class="fa fa-arrow-up" ng-click="upvote(info)"></i>
-        <i class="fa fa-arrow-down" ng-click="downvote(info)"></i>{{info.votes}}<br>
-        <h1>{{post.title}}</h1>
-        <p>{{post.author}}</p>
+        <h1>{{post.title}} |
+          <i class="fa fa-arrow-up" ng-click="upvote(post)"></i><i class="fa fa-arrow-down" ng-click="downvote(post)"></i><span ng-class="{pos: post.votes > 0, neg: post.votes < 0}"> {{post.votes}}</span><br>
+      </h1>
+        <p class='author'>Author: {{post.author}}</p></br>
         <p>{{post.description}}</p>
-        <div ng-repeat='comment in post.comments'>
-          <button>Add comment<p>{{comment}}</p></button>
-        </div>
-      </section>
-    </main>
+       <i class="fa fa-calendar"></i> <span>{{post.date | date: 'EEEE, MMMM dd, yyyy'}}</span> | <a ng-click="showComments = !showComments"><i class="fa fa-commenting"></i> {{info.comments.length}}
+     <ng-pluralize count="post.comments.length" when="
+         {
+         '1': 'Comment',
+         'other': 'Comments'
+         }">
+     </ng-pluralize></a> | <a ng-click="newComment = !newComment"><i class="fa fa-pencil"></i> Add Comment</a>
 
+     <div ng-show="showComments" ng-repeat="comment in post.comments" class="comments">
+       <ul>
+         <li>{{comment.person}} says "{{comment.message}}"</li>
+       </ul>
+     </div>
 
-
-
+     <form ng-init="newComment = false" ng-show="newComment" class="comments">
+       <label for="person">Author</label>
+       <input type="text" id="person" ng-model="person">
+       <br>
+       <label for="message">Message</label>
+       <input type="text" id="message" ng-model="message">
+       <input type="submit" value="Submit" ng-click="addComment(post)" class="submit">
+     </form>
+  </main>
   </body>
 </html>

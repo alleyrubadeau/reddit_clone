@@ -1,6 +1,7 @@
 var app = angular.module("firstApp", ['ngSanitize']);
 
 app.controller('redditController', function ($scope) {
+  $scope.hidecomments = true;
   $scope.posts = [
     {
       title: 'Boston Marathon',
@@ -8,11 +9,13 @@ app.controller('redditController', function ($scope) {
       author: 'Alley Rubadeau',
       description: 'LoremLoremLoremLoremLoremvvvvLoremLoremLorem',
       votes: 0,
-      date: Date.now()
+      date: Date.now(),
+      comments: [{person: 'boo', message: 'boo'}]
     }
   ];
   $scope.submitpost = function(post){
-    $scope.posts.push(
+
+    posts.push(
       {
         title: $scope.title,
         image: $scope.image,
@@ -24,19 +27,24 @@ app.controller('redditController', function ($scope) {
       }
     )
   }
-  $scope.addComment = function () {
-      $scope.comments = [];
+  $scope.showCommentForm = function () {
+    this.hidecomments = false;
 
-      $scope.comments.push({
-          comment: $scope.comments
-      });
-      $scope.comments = "";
+  $scope.addComment = function (post) {
+          var comment = {};
+          comment.person = $scope.person;
+          comment.message = $scope.message;
+          post.comments.push(comment);
+          $scope.person = "";
+          $scope.message = "";
     };
-  $scope.upvote = function(info) {
-     info.votes++
+  }
+  $scope.upvote = function(post) {
+     post.votes++
    }
-   $scope.downvote = function(info) {
-     info.votes--
+   $scope.downvote = function(post) {
+
+     post.votes--
    }
    $scope.show = function() {
       if ($scope.form === 0) {
